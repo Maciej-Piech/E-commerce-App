@@ -14,7 +14,7 @@ public class ProductCatalogTest {
         ProductCatalog catalog = thereIsProductCatalog();
         catalog.addProduct("lego-bricks", "Nice Lego set");
 
-        List<ProductInfo> products = catalog.allPublishedProducts();
+        List<ProductData> products = catalog.allPublishedProducts();
         assertEquals(0, products.size());
     }
 
@@ -35,7 +35,7 @@ public class ProductCatalogTest {
 
         catalog.changePrice(productId, BigDecimal.valueOf(20.20));
 
-        ProductInfo loaded = catalog.findById(productId);
+        ProductData loaded = catalog.getDetails(productId);
         assertEquals(BigDecimal.valueOf(20.20), loaded.getPrice());
     }
 
@@ -48,11 +48,11 @@ public class ProductCatalogTest {
         catalog.assignImage(productId, "http://someNiceImage");
         catalog.publish(productId);
 
-        List<ProductInfo> products = catalog.allPublishedProducts();
+        List<ProductData> products = catalog.allPublishedProducts();
         assertEquals(1, products.size());
     }
 
     private ProductCatalog thereIsProductCatalog() {
-        return new ProductCatalog();
+        return new ProductCatalog(new MapProductStorage());
     }
 }

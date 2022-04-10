@@ -1,10 +1,12 @@
 package pl.mpiech.credit;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import pl.mpiech.credit.productCatalog.MapProductStorage;
 import pl.mpiech.credit.productCatalog.ProductCatalog;
-//import pl.mpiech.productcatalog.ProductCatalog;
+
 import java.math.BigDecimal;
 
 import static java.lang.System.out;
@@ -20,7 +22,7 @@ public class App {
 
     @Bean
     ProductCatalog createMyProductCatalog() {
-        ProductCatalog productCatalog = new ProductCatalog();
+        ProductCatalog productCatalog = new ProductCatalog(new MapProductStorage());
 
         fillWithExampleProducts(productCatalog);
 

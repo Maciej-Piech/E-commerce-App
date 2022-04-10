@@ -2,7 +2,7 @@ package pl.mpiech.credit.productCatalog;
 
 import java.math.BigDecimal;
 
-public class ProductInfo {
+public class ProductData {
     private final String id;
     private final String name;
     private BigDecimal price;
@@ -17,7 +17,7 @@ public class ProductInfo {
         return imageUrl;
     }
 
-    public ProductInfo(String id, String name) {
+    public ProductData(String id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -40,5 +40,9 @@ public class ProductInfo {
 
     public void publish() {
         this.online = true;
+    }
+
+    public String getId() {
+        return this.id;
     }
 }

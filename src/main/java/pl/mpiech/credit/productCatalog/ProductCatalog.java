@@ -1,26 +1,27 @@
 package pl.mpiech.credit.productCatalog;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ProductCatalog {
-    Map<String, ProductInfo> products;
+    ProductStorage productStorage;
 
-    public ProductCatalog() {
-        this.products = new HashMap<>();
+    public ProductCatalog(ProductStorage productStorage) {
+        this.productStorage = productStorage;
     }
 
     public String addProduct(String id, String name) {
-        ProductInfo productData = new ProductInfo(id, name);
-        products.put(id, productData);
+        ProductData newProduct = new ProductData(id, name);
+        productStorage.save(newProduct);
         return id;
     }
 
+    private ProductData loadProductById(String productId) {
+        return productStorage.load(productId);
+    }
+
     public void publish(String productId) {
-        ProductInfo loaded = products.get(productId);
+        ProductData loaded = productStorage.load(productId);
 
         if (loaded.getPrice() == null) {
             throw new CantPublishProductException();
@@ -29,24 +30,22 @@ public class ProductCatalog {
         loaded.publish();
     }
 
-    public List<ProductInfo> allPublishedProducts() {
-        return products.values()
-                .stream()
-                .filter(item -> item.isOnline())
-                .collect(Collectors.toList());
+    public List<ProductData> allPublishedProducts() {
+        return productStorage.allPublished();
     }
 
     public void changePrice(String productId, BigDecimal newPrice) {
-        ProductInfo loaded = findById(productId);
+        ProductData loaded = loadProductById(productId);
         loaded.changePrice(newPrice);
     }
 
-    public ProductInfo findById(String productId) {
-        return products.get(productId);
+    public ProductData getDetails(String productId) {
+
+        return loadProductById(productId);
     }
 
     public void assignImage(String productId, String imageUrl) {
-        ProductInfo loaded = findById(productId);
+        ProductData loaded = loadProductById(productId);
         loaded.assignImage(imageUrl);
     }
 }
